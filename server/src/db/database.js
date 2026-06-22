@@ -11,6 +11,15 @@ fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 export const db = new Database(dbPath);
 db.pragma('foreign_keys = ON');
 
+function parseJson(value, fallback) {
+  if (!value) return fallback;
+  try {
+    return JSON.parse(value);
+  } catch (_error) {
+    return fallback;
+  }
+}
+
 export function mapEvidence(row) {
   const suggestions = db
     .prepare('SELECT * FROM competence_suggestions WHERE evidence_id = ? ORDER BY id ASC')
@@ -25,6 +34,26 @@ export function mapEvidence(row) {
       source: suggestion.source,
       createdAt: suggestion.created_at
     }));
+
+  const evaluationRow = db
+    .prepare('SELECT * FROM evidence_evaluations WHERE evidence_id = ?')
+    .get(row.id);
+  const evaluation = evaluationRow
+    ? {
+        id: evaluationRow.id,
+        evidenceId: evaluationRow.evidence_id,
+        overallScore: evaluationRow.overall_score,
+        status: evaluationRow.status,
+        rubric: parseJson(evaluationRow.rubric_json, {}),
+        riskFlags: parseJson(evaluationRow.risk_flags_json, []),
+        humanReviewRequired: Boolean(evaluationRow.human_review_required),
+        rationale: evaluationRow.rationale,
+        source: evaluationRow.source,
+        providerModel: evaluationRow.provider_model ?? '',
+        evidenceHash: evaluationRow.evidence_hash,
+        createdAt: evaluationRow.created_at
+      }
+    : null;
 
   const votes = db
     .prepare(
@@ -57,6 +86,16 @@ export function mapEvidence(row) {
     body: row.body,
     authorId: row.author_id,
     communityId: row.community_id ?? null,
+    skillArea: row.skill_area ?? 'general',
+    evidenceType: row.evidence_type ?? 'experiencia',
+    assessmentMode: row.assessment_mode ?? 'evidencia_practica',
+    learningSources: row.learning_sources ?? '',
+    challengeAnswers: row.challenge_answers ?? '',
+    artifactUrl: row.artifact_url ?? '',
+    artifactFileName: row.artifact_file_name ?? '',
+    artifactMimeType: row.artifact_mime_type ?? '',
+    artifactHash: row.artifact_hash ?? '',
+    artifactSize: Number(row.artifact_size ?? 0),
     status: row.status,
     createdAt: row.created_at,
     author: {
@@ -69,6 +108,7 @@ export function mapEvidence(row) {
     community: row.community_id
       ? { id: row.community_id, name: row.community_name, slug: row.community_slug, area: row.community_area }
       : null,
+    evaluation,
     suggestions,
     votes,
     validationScore: positive - negative,

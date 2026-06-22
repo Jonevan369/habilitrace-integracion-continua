@@ -13,14 +13,14 @@ pipeline {
 
   environment {
     NODE_ENV = 'test'
-    COMPOSE_PROJECT_NAME = "skillcert_ci_${env.BUILD_NUMBER}"
+    COMPOSE_PROJECT_NAME = "habilitrace_ci_${env.BUILD_NUMBER}"
   }
 
   stages {
     stage('Checkout') {
       steps {
         git branch: 'main',
-          url: 'https://github.com/Jonevan369/skillcert-integracion-continua'
+          url: 'https://github.com/Jonevan369/habilitrace-integracion-continua'
       }
     }
 
@@ -62,10 +62,10 @@ pipeline {
       sh 'docker compose down --volumes --remove-orphans || true'
     }
     success {
-      echo 'SkillCert CI pipeline completed successfully.'
+      echo 'HabiliTrace CI pipeline completed successfully.'
     }
     failure {
-      echo 'SkillCert CI pipeline failed. Review the failing stage logs in Jenkins.'
+      echo 'HabiliTrace CI pipeline failed. Review the failing stage logs in Jenkins.'
     }
   }
 }

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 128,
+    "userId": 49,
+    "skillName": "APIs y servicios backend",
+    "title": "Especialista en APIs y servicios backend",
+    "threshold": 6,
+    "issuedAt": "2026-06-21 22:04:34",
+    "mintedHash": null
+  },
+  {
+    "id": 130,
+    "userId": 49,
+    "skillName": "Desarrollo frontend con React",
+    "title": "Especialista en Desarrollo frontend con React",
+    "threshold": 6,
+    "issuedAt": "2026-06-21 22:04:34",
+    "mintedHash": null
+  },
+  {
+    "id": 127,
+    "userId": 49,
+    "skillName": "APIs y servicios backend",
+    "title": "Competencia validada en APIs y servicios backend",
+    "threshold": 3,
+    "issuedAt": "2026-06-21 22:04:34",
+    "mintedHash": null
+  },
+  {
+    "id": 129,
+    "userId": 49,
+    "skillName": "Desarrollo frontend con React",
+    "title": "Competencia validada en Desarrollo frontend con React",
+    "threshold": 3,
+    "issuedAt": "2026-06-21 22:04:34",
+    "mintedHash": null
+  }
+]

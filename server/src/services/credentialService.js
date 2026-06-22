@@ -11,11 +11,11 @@ export function mintBadgeCredential({ badgeId, user }) {
 
   const credential = {
     '@context': ['https://www.w3.org/2018/credentials/v1'],
-    type: ['VerifiableCredential', 'SkillBadgeCredential'],
-    issuer: 'did:web:skillcert.local',
+    type: ['VerifiableCredential', 'CompetenceEvidenceCredential'],
+    issuer: 'did:web:habilitrace.local',
     issuanceDate: new Date().toISOString(),
     credentialSubject: {
-      id: `skillcert:user:${user.id}`,
+      id: `habilitrace:user:${user.id}`,
       name: user.name,
       skill: badge.skill_name,
       badge: badge.title,

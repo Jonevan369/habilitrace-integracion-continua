@@ -1,12 +1,22 @@
 import { z } from 'zod';
 import { db, evidenceSelectClause, mapEvidence } from '../db/database.js';
-import { suggestCompetences } from '../services/ai.js';
+import { evaluateEvidence } from '../services/ai.js';
+import { saveEvidenceArtifact } from '../services/artifactService.js';
 import { refreshBadgesForUser } from '../services/badgeService.js';
 import { calculateKarmaDelta, voteWeightForKarma } from '../services/karmaService.js';
 
 export const evidenceSchema = z.object({
   title: z.string().min(4).max(120),
   body: z.string().min(20).max(4000),
+  skillArea: z.string().max(40).optional().default('general'),
+  evidenceType: z.string().max(40).optional().default('experiencia'),
+  assessmentMode: z.string().max(40).optional().default('evidencia_practica'),
+  learningSources: z.string().max(2000).optional().default(''),
+  challengeAnswers: z.string().max(3000).optional().default(''),
+  artifactUrl: z.union([z.string().url().max(500), z.literal('')]).optional().default(''),
+  fileName: z.string().max(160).optional().default(''),
+  fileType: z.string().max(100).optional().default(''),
+  fileDataBase64: z.string().max(7_200_000).optional().default(''),
   communityId: z.coerce.number().int().positive().optional().nullable(),
   authorId: z.coerce.number().int().positive().optional()
 });
@@ -53,16 +63,43 @@ export async function createEvidence(req, res, next) {
     const authorId = req.user?.id ?? payload.authorId;
     if (!authorId) return res.status(401).json({ message: 'Usuario requerido' });
 
-    const suggestions = await suggestCompetences(payload);
+    const artifact = saveEvidenceArtifact(payload);
+    const evaluationPayload = {
+      ...payload,
+      artifactUrl: artifact.url || payload.artifactUrl,
+      artifactHash: artifact.hash
+    };
+    const evaluation = await evaluateEvidence(evaluationPayload);
     const create = db.transaction(() => {
       const evidenceId = db
-        .prepare('INSERT INTO evidences (title, body, author_id, community_id) VALUES (?, ?, ?, ?)')
-        .run(payload.title, payload.body, authorId, payload.communityId ?? null).lastInsertRowid;
+        .prepare(
+          `INSERT INTO evidences
+            (title, body, author_id, community_id, skill_area, evidence_type, assessment_mode, learning_sources,
+             challenge_answers, artifact_url, artifact_file_name, artifact_mime_type, artifact_hash, artifact_size, status)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        )
+        .run(
+          payload.title,
+          payload.body,
+          authorId,
+          payload.communityId ?? null,
+          payload.skillArea,
+          payload.evidenceType,
+          payload.assessmentMode,
+          payload.learningSources,
+          payload.challengeAnswers,
+          artifact.url || payload.artifactUrl || '',
+          artifact.fileName,
+          artifact.mimeType,
+          artifact.hash,
+          artifact.size,
+          evaluation.status
+        ).lastInsertRowid;
       const insertSuggestion = db.prepare(
         `INSERT INTO competence_suggestions (evidence_id, name, level, confidence, rationale, source)
          VALUES (?, ?, ?, ?, ?, ?)`
       );
-      suggestions.forEach((suggestion) => {
+      evaluation.detectedCompetences.forEach((suggestion) => {
         insertSuggestion.run(
           evidenceId,
           suggestion.name,
@@ -72,6 +109,22 @@ export async function createEvidence(req, res, next) {
           suggestion.source
         );
       });
+      db.prepare(
+        `INSERT INTO evidence_evaluations
+          (evidence_id, overall_score, status, rubric_json, risk_flags_json, human_review_required, rationale, source, provider_model, evidence_hash)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).run(
+        evidenceId,
+        evaluation.overallScore,
+        evaluation.status,
+        JSON.stringify(evaluation.rubric),
+        JSON.stringify(evaluation.riskFlags),
+        evaluation.humanReviewRequired ? 1 : 0,
+        evaluation.rationale,
+        evaluation.source,
+        evaluation.providerModel ?? '',
+        evaluation.evidenceHash
+      );
       return evidenceId;
     });
 
@@ -89,6 +142,12 @@ export function voteEvidence(req, res, next) {
     const payload = voteSchema.parse(req.body);
     const userId = req.user?.id ?? payload.userId;
     if (!userId) return res.status(401).json({ message: 'Usuario requerido' });
+
+    const target = db.prepare('SELECT author_id FROM evidences WHERE id = ?').get(evidenceId);
+    if (!target) return res.status(404).json({ message: 'Evidencia no encontrada' });
+    if (target.author_id === userId) {
+      return res.status(400).json({ message: 'El autor no puede auditar su propia evidencia' });
+    }
 
     const voter = db.prepare('SELECT id, karma FROM users WHERE id = ?').get(userId);
     const weight = voteWeightForKarma(voter?.karma);

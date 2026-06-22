@@ -1,0 +1,15 @@
+{
+  "name": "HabiliTrace API",
+  "version": "0.3.0",
+  "message": "Esta es la API REST del prototipo. No es una pagina visual; usa /api/docs para probar endpoints con Swagger.",
+  "docs": "/api/docs",
+  "health": "/api/health",
+  "exampleEndpoints": {
+    "login": "POST /api/auth/login",
+    "evidences": "GET /api/evidences",
+    "createEvidence": "POST /api/evidences",
+    "competenceMap": "GET /api/users/:userId/competence-map",
+    "stats": "GET /api/stats",
+    "aiStatus": "GET /api/ai/status"
+  }
+}

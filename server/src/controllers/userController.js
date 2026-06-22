@@ -106,7 +106,7 @@ export function exportProfile(req, res, next) {
     const userId = Number(req.params.userId);
     if (req.user.id !== userId) return res.status(403).json({ message: 'Solo puedes exportar tu propio perfil' });
     const payload = buildProfileExport(userId);
-    res.setHeader('Content-Disposition', `attachment; filename="skillcert-profile-${userId}.json"`);
+    res.setHeader('Content-Disposition', `attachment; filename="habilitrace-profile-${userId}.json"`);
     res.json(payload);
   } catch (error) {
     next(error);

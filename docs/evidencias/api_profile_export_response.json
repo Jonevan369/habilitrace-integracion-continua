@@ -1,0 +1,173 @@
+{
+  "exportedAt": "2026-06-21T22:08:09.294Z",
+  "product": "HabiliTrace",
+  "user": {
+    "id": 49,
+    "name": "Ana Torres",
+    "email": "ana@example.com",
+    "headline": "Frontend Developer & Mentora React",
+    "bio": "Construyo interfaces de aprendizaje y evidencias técnicas verificables. Especialista en accesibilidad web y design systems.",
+    "karma": 128,
+    "createdAt": "2026-06-21 22:04:34"
+  },
+  "competences": [
+    {
+      "name": "APIs y servicios backend",
+      "levelWeight": 3,
+      "confidence": 0.87,
+      "validations": 6,
+      "evidenceCount": 1,
+      "level": "avanzado",
+      "strength": 119
+    },
+    {
+      "name": "Desarrollo frontend con React",
+      "levelWeight": 3,
+      "confidence": 0.92,
+      "validations": 6,
+      "evidenceCount": 1,
+      "level": "avanzado",
+      "strength": 119
+    }
+  ],
+  "badges": [
+    {
+      "id": 128,
+      "userId": 49,
+      "skillName": "APIs y servicios backend",
+      "title": "Especialista en APIs y servicios backend",
+      "threshold": 6,
+      "issuedAt": "2026-06-21 22:04:34",
+      "mintedHash": "35e537f3a5bd85430e72b177dc6b41ffe78061f5d784360977b903cad9b497cf"
+    },
+    {
+      "id": 130,
+      "userId": 49,
+      "skillName": "Desarrollo frontend con React",
+      "title": "Especialista en Desarrollo frontend con React",
+      "threshold": 6,
+      "issuedAt": "2026-06-21 22:04:34",
+      "mintedHash": null
+    },
+    {
+      "id": 127,
+      "userId": 49,
+      "skillName": "APIs y servicios backend",
+      "title": "Competencia validada en APIs y servicios backend",
+      "threshold": 3,
+      "issuedAt": "2026-06-21 22:04:34",
+      "mintedHash": null
+    },
+    {
+      "id": 129,
+      "userId": 49,
+      "skillName": "Desarrollo frontend con React",
+      "title": "Competencia validada en Desarrollo frontend con React",
+      "threshold": 3,
+      "issuedAt": "2026-06-21 22:04:34",
+      "mintedHash": null
+    }
+  ],
+  "evidences": [
+    {
+      "id": 51,
+      "title": "Dashboard React para seguimiento académico con métricas en tiempo real",
+      "body": "Implementé una aplicación React con Vite, Zustand y React Router para gestionar evidencias académicas. Construí filtros dinámicos, componentes reutilizables y visualización de datos (recharts) para analizar progreso por competencia. Documenté componentes, rutas protegidas, consumo de API REST y pruebas de build. El resultado fue un dashboard funcional con +8 vistas, autenticación JWT y despliegue continuo en GitHub Actions.",
+      "author_id": 49,
+      "community_id": 40,
+      "status": "prevalidated_ai",
+      "created_at": "2026-06-21 22:04:34",
+      "skill_area": "software",
+      "evidence_type": "proyecto",
+      "artifact_url": "https://github.com/Jonevan369/skillcert-integracion-continua",
+      "assessment_mode": "mixta",
+      "learning_sources": "Documentación oficial de React, tutoriales de Vite, ejemplos de React Router, curso Scrimba de Zustand y notas propias de implementación.",
+      "challenge_answers": "Elegí componentes reutilizables para separar captura de evidencias, listado y mapa visual. Si el API cambiara, aislaría el cambio en el cliente REST y mantendría las pantallas. El error más probable era perder el token JWT, por eso verifiqué rutas protegidas con un guard middleware y build de producción. La mayor complejidad fue el estado global compartido entre el formulario wizard y la vista de evaluación.",
+      "artifact_file_name": "",
+      "artifact_mime_type": "",
+      "artifact_hash": "",
+      "artifact_size": 0
+    }
+  ],
+  "evaluations": [
+    {
+      "id": 45,
+      "evidence_id": 51,
+      "overall_score": 92,
+      "status": "prevalidated_ai",
+      "rubric_json": "{\"pertinencia\":88,\"claridad\":95,\"suficiencia\":100,\"complejidad\":90,\"coherenciaTecnica\":92,\"trazabilidad\":100,\"dominioConceptual\":82,\"transferencia\":92}",
+      "risk_flags_json": "[]",
+      "human_review_required": false,
+      "rationale": "La evidencia alcanza 92/100 y presenta proceso, herramientas y resultado con trazabilidad suficiente.",
+      "source": "fallback",
+      "evidence_hash": "408adc788644c76e5c0a3f7501aa9bad19515eec496702380c2c5da717bc104a",
+      "created_at": "2026-06-21 22:04:34",
+      "provider_model": "local-rubric-v1",
+      "rubric": {
+        "pertinencia": 88,
+        "claridad": 95,
+        "suficiencia": 100,
+        "complejidad": 90,
+        "coherenciaTecnica": 92,
+        "trazabilidad": 100,
+        "dominioConceptual": 82,
+        "transferencia": 92
+      },
+      "riskFlags": []
+    }
+  ],
+  "suggestions": [
+    {
+      "id": 91,
+      "evidence_id": 51,
+      "name": "Desarrollo frontend con React",
+      "level": "avanzado",
+      "confidence": 0.92,
+      "rationale": "Coincide con area declarada software; rubrica: pertinencia 88, coherencia 92.",
+      "source": "fallback",
+      "created_at": "2026-06-21 22:04:34"
+    },
+    {
+      "id": 92,
+      "evidence_id": 51,
+      "name": "APIs y servicios backend",
+      "level": "avanzado",
+      "confidence": 0.87,
+      "rationale": "Coincide con area declarada software; rubrica: pertinencia 88, coherencia 92.",
+      "source": "fallback",
+      "created_at": "2026-06-21 22:04:34"
+    }
+  ],
+  "validations": [
+    {
+      "id": 204,
+      "evidence_id": 51,
+      "user_id": 52,
+      "value": 1,
+      "weight": 2,
+      "weighted_value": 2,
+      "comment": "Arquitectura sólida, documentación clara y build verificable.",
+      "created_at": "2026-06-21 22:04:34"
+    },
+    {
+      "id": 206,
+      "evidence_id": 51,
+      "user_id": 53,
+      "value": 1,
+      "weight": 2,
+      "weighted_value": 2,
+      "comment": "UX bien pensada, componentes accesibles.",
+      "created_at": "2026-06-21 22:04:34"
+    },
+    {
+      "id": 205,
+      "evidence_id": 51,
+      "user_id": 61,
+      "value": 1,
+      "weight": 2,
+      "weighted_value": 2,
+      "comment": "Excelente separación de responsabilidades y manejo de estado.",
+      "created_at": "2026-06-21 22:04:34"
+    }
+  ]
+}

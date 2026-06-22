@@ -1,0 +1,97 @@
+{
+  "totals": {
+    "users": 15,
+    "communities": 10,
+    "evidences": 15,
+    "badges": 32
+  },
+  "evaluations": {
+    "total": 15,
+    "averageScore": 84,
+    "prevalidated": 6,
+    "needsHumanReview": 9,
+    "insufficient": 0,
+    "humanReviewRequired": 8,
+    "reviewRate": 53.3
+  },
+  "votes": {
+    "confirmations": 41,
+    "objections": 0,
+    "weightedConsensus": 77.69
+  },
+  "ai": {
+    "provider": "gemini",
+    "mode": "external_model",
+    "model": "gemini-1.5-flash",
+    "configured": {
+      "openrouter": false,
+      "gemini": true
+    },
+    "fallbackAvailable": true,
+    "humanReviewPolicy": "La IA genera una preevaluacion. Evidencias de alto riesgo, baja trazabilidad, baja confianza u objeciones pasan a revision humana ponderada por reputacion."
+  },
+  "aiSources": [
+    {
+      "source": "fallback",
+      "model": "local-rubric-v1",
+      "count": 15
+    }
+  ],
+  "topCompetences": [
+    {
+      "name": "APIs y servicios backend",
+      "evidenceCount": 4,
+      "averageConfidence": 0.82
+    },
+    {
+      "name": "Instalacion electrica residencial",
+      "evidenceCount": 3,
+      "averageConfidence": 0.84
+    },
+    {
+      "name": "Pintura artistica",
+      "evidenceCount": 3,
+      "averageConfidence": 0.81
+    },
+    {
+      "name": "Diseno de experiencia de usuario",
+      "evidenceCount": 3,
+      "averageConfidence": 0.77
+    },
+    {
+      "name": "Desarrollo frontend con React",
+      "evidenceCount": 2,
+      "averageConfidence": 0.86
+    },
+    {
+      "name": "Investigacion aplicada",
+      "evidenceCount": 2,
+      "averageConfidence": 0.82
+    },
+    {
+      "name": "Documentacion de evidencias de aprendizaje",
+      "evidenceCount": 2,
+      "averageConfidence": 0.74
+    },
+    {
+      "name": "Analisis de informacion",
+      "evidenceCount": 2,
+      "averageConfidence": 0.7
+    }
+  ],
+  "humanReview": {
+    "summary": "La revision humana es la capa de control despues de la preevaluacion de IA. La IA sugiere competencias y riesgo; la comunidad confirma o cuestiona con votos ponderados por reputacion.",
+    "triggerRules": [
+      "Habilidades sensibles: electricidad, soldadura, salud, quimica o practicas con riesgo fisico.",
+      "Evidencias con baja trazabilidad: sin soporte, fechas, repositorio, bitacora o archivo verificable.",
+      "Confianza moderada, descripcion vaga, contradicciones o puntaje insuficiente en la rubrica.",
+      "Objeciones de revisores con reputacion suficiente."
+    ],
+    "workflow": [
+      "El usuario registra evidencia, fuente de aprendizaje, soporte y defensa diagnostica.",
+      "La IA calcula rubrica, competencias detectadas, hash y estado preliminar.",
+      "Si aplica revision, otros usuarios de la red confirman o cuestionan la evidencia.",
+      "El consenso ponderado alimenta reputacion, mapa de habilidades y credenciales."
+    ]
+  }
+}

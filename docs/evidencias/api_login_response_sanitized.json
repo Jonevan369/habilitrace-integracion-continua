@@ -1,0 +1,12 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5...[JWT REDACTADO]",
+  "user": {
+    "id": 49,
+    "name": "Ana Torres",
+    "email": "ana@example.com",
+    "headline": "Frontend Developer & Mentora React",
+    "bio": "Construyo interfaces de aprendizaje y evidencias técnicas verificables. Especialista en accesibilidad web y design systems.",
+    "karma": 128,
+    "createdAt": "2026-06-21 22:04:34"
+  }
+}

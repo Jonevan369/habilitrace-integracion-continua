@@ -3,9 +3,15 @@ node_modules
 .venv
 .env
 .env.*
+!.env.example
+!server/.env.example
 dist
 coverage
 *.log
+~$*.docx
+.playwright-cli/
+output/
+server/uploads/
 server/data/*.db
 server/data/*.db-journal
 server/server/data/*.db

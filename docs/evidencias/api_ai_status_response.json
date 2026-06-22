@@ -1,0 +1,11 @@
+{
+  "provider": "gemini",
+  "mode": "external_model",
+  "model": "gemini-1.5-flash",
+  "configured": {
+    "openrouter": false,
+    "gemini": true
+  },
+  "fallbackAvailable": true,
+  "humanReviewPolicy": "La IA genera una preevaluacion. Evidencias de alto riesgo, baja trazabilidad, baja confianza u objeciones pasan a revision humana ponderada por reputacion."
+}

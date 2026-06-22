@@ -31,6 +31,16 @@ db.exec(`
     body TEXT NOT NULL,
     author_id INTEGER NOT NULL,
     community_id INTEGER,
+    skill_area TEXT NOT NULL DEFAULT 'general',
+    evidence_type TEXT NOT NULL DEFAULT 'experiencia',
+    assessment_mode TEXT NOT NULL DEFAULT 'evidencia_practica',
+    learning_sources TEXT DEFAULT '',
+    challenge_answers TEXT DEFAULT '',
+    artifact_url TEXT DEFAULT '',
+    artifact_file_name TEXT DEFAULT '',
+    artifact_mime_type TEXT DEFAULT '',
+    artifact_hash TEXT DEFAULT '',
+    artifact_size INTEGER DEFAULT 0,
     status TEXT NOT NULL DEFAULT 'open',
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -63,6 +73,22 @@ db.exec(`
     UNIQUE(evidence_id, user_id)
   );
 
+  CREATE TABLE IF NOT EXISTS evidence_evaluations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    evidence_id INTEGER NOT NULL UNIQUE,
+    overall_score INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    rubric_json TEXT NOT NULL,
+    risk_flags_json TEXT NOT NULL,
+    human_review_required INTEGER NOT NULL DEFAULT 0,
+    rationale TEXT NOT NULL,
+    source TEXT NOT NULL DEFAULT 'fallback',
+    provider_model TEXT DEFAULT '',
+    evidence_hash TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (evidence_id) REFERENCES evidences(id) ON DELETE CASCADE
+  );
+
   CREATE TABLE IF NOT EXISTS follows (
     follower_id INTEGER NOT NULL,
     following_id INTEGER NOT NULL,
@@ -92,6 +118,22 @@ db.exec(`
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE(user_id, skill_name, title)
   );
+
+  CREATE TABLE IF NOT EXISTS support_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    evidence_id INTEGER,
+    type TEXT NOT NULL DEFAULT 'general',
+    subject TEXT NOT NULL,
+    message TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'open',
+    response_due_at TEXT NOT NULL,
+    resolution TEXT DEFAULT '',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (evidence_id) REFERENCES evidences(id) ON DELETE SET NULL
+  );
 `);
 
 addColumnIfMissing('users', 'password_hash', 'TEXT');
@@ -99,7 +141,21 @@ addColumnIfMissing('users', 'headline', "TEXT DEFAULT ''");
 addColumnIfMissing('users', 'bio', "TEXT DEFAULT ''");
 addColumnIfMissing('users', 'karma', 'REAL NOT NULL DEFAULT 0');
 addColumnIfMissing('evidences', 'community_id', 'INTEGER');
+addColumnIfMissing('evidences', 'skill_area', "TEXT NOT NULL DEFAULT 'general'");
+addColumnIfMissing('evidences', 'evidence_type', "TEXT NOT NULL DEFAULT 'experiencia'");
+addColumnIfMissing('evidences', 'assessment_mode', "TEXT NOT NULL DEFAULT 'evidencia_practica'");
+addColumnIfMissing('evidences', 'learning_sources', "TEXT DEFAULT ''");
+addColumnIfMissing('evidences', 'challenge_answers', "TEXT DEFAULT ''");
+addColumnIfMissing('evidences', 'artifact_url', "TEXT DEFAULT ''");
+addColumnIfMissing('evidences', 'artifact_file_name', "TEXT DEFAULT ''");
+addColumnIfMissing('evidences', 'artifact_mime_type', "TEXT DEFAULT ''");
+addColumnIfMissing('evidences', 'artifact_hash', "TEXT DEFAULT ''");
+addColumnIfMissing('evidences', 'artifact_size', 'INTEGER DEFAULT 0');
+addColumnIfMissing('evidence_evaluations', 'provider_model', "TEXT DEFAULT ''");
 addColumnIfMissing('votes', 'weight', 'REAL NOT NULL DEFAULT 1');
 addColumnIfMissing('votes', 'weighted_value', 'REAL NOT NULL DEFAULT 1');
+addColumnIfMissing('support_requests', 'evidence_id', 'INTEGER');
+addColumnIfMissing('support_requests', 'resolution', "TEXT DEFAULT ''");
+addColumnIfMissing('support_requests', 'updated_at', 'TEXT');
 
 console.log('SQLite schema ready.');

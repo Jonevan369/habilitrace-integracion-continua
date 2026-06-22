@@ -7,14 +7,32 @@ import swaggerUi from 'swagger-ui-express';
 import { ZodError } from 'zod';
 import { router } from './routes.js';
 import { openApiSpec } from './openapi.js';
+import { uploadRoot } from './services/artifactService.js';
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
+const configuredClientUrls = String(process.env.CLIENT_URL ?? 'http://localhost:5173')
+  .split(',')
+  .map((value) => value.trim())
+  .filter(Boolean);
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (configuredClientUrls.includes(origin)) return true;
+  return /^http:\/\/(localhost|127\.0\.0\.1):517\d$/.test(origin);
+}
 
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL ?? 'http://localhost:5173' }));
-app.use(express.json({ limit: '1mb' }));
+app.use(
+  cors({
+    origin(origin, callback) {
+      callback(null, isAllowedOrigin(origin));
+    }
+  })
+);
+app.use(express.json({ limit: '8mb' }));
 app.use(morgan('dev'));
+app.use('/uploads', express.static(uploadRoot));
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec));
 app.use('/api', router);

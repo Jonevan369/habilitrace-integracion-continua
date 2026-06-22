@@ -13,7 +13,7 @@ export function listUserBadges(req, res, next) {
 export function mintCredential(req, res, next) {
   try {
     const credential = mintBadgeCredential({ badgeId: Number(req.params.badgeId), user: req.user });
-    res.setHeader('Content-Disposition', `attachment; filename="skillcert-credential-${req.params.badgeId}.json"`);
+    res.setHeader('Content-Disposition', `attachment; filename="habilitrace-credential-${req.params.badgeId}.json"`);
     res.json(credential);
   } catch (error) {
     next(error);

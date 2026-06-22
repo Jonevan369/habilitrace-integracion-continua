@@ -27,13 +27,30 @@ export function buildProfileExport(userId) {
         )
         .all(...evidenceIds)
     : [];
+  const evaluations = evidenceIds.length
+    ? db
+        .prepare(
+          `SELECT * FROM evidence_evaluations
+           WHERE evidence_id IN (${evidenceIds.map(() => '?').join(',')})
+           ORDER BY created_at DESC`
+        )
+        .all(...evidenceIds)
+        .map((evaluation) => ({
+          ...evaluation,
+          rubric: JSON.parse(evaluation.rubric_json),
+          riskFlags: JSON.parse(evaluation.risk_flags_json),
+          human_review_required: Boolean(evaluation.human_review_required)
+        }))
+    : [];
 
   return {
     exportedAt: new Date().toISOString(),
+    product: 'HabiliTrace',
     user,
     competences: getCompetenceMapForUser(userId).competences,
     badges: listBadges(userId),
     evidences,
+    evaluations,
     suggestions,
     validations
   };

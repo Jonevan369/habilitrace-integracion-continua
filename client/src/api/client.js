@@ -1,4 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
+export const API_ORIGIN = API_URL.replace(/\/api\/?$/, '');
 
 function token() {
   return localStorage.getItem('skillcert_token');
@@ -19,6 +20,7 @@ export const api = {
   login: (payload) => request('/auth/login', { method: 'POST', body: JSON.stringify(payload) }),
   register: (payload) => request('/auth/register', { method: 'POST', body: JSON.stringify(payload) }),
   me: () => request('/auth/me'),
+  search: (query = '') => request(`/search?q=${encodeURIComponent(query)}`),
   users: (search = '') => request(`/users${search ? `?search=${encodeURIComponent(search)}` : ''}`),
   profile: (userId) => request(`/users/${userId}/profile`),
   follow: (userId) => request(`/users/${userId}/follow`, { method: 'POST' }),
@@ -31,10 +33,14 @@ export const api = {
   competenceMap: (userId, params = {}) => request(`/users/${userId}/competence-map?${new URLSearchParams(params)}`),
   progress: (userId, skill) => request(`/users/${userId}/progress?skill=${encodeURIComponent(skill)}`),
   trends: () => request('/trends'),
+  stats: () => request('/stats'),
+  aiStatus: () => request('/ai/status'),
   communities: () => request('/communities'),
   community: (id) => request(`/communities/${id}`),
   createCommunity: (payload) => request('/communities', { method: 'POST', body: JSON.stringify(payload) }),
   joinCommunity: (id) => request(`/communities/${id}/join`, { method: 'POST' }),
   leaveCommunity: (id) => request(`/communities/${id}/join`, { method: 'DELETE' }),
-  mintCredential: (badgeId) => request(`/badges/${badgeId}/credential`)
+  mintCredential: (badgeId) => request(`/badges/${badgeId}/credential`),
+  supportRequests: () => request('/support/requests'),
+  createSupportRequest: (payload) => request('/support/requests', { method: 'POST', body: JSON.stringify(payload) })
 };

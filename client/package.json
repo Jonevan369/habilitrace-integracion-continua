@@ -1,5 +1,5 @@
 {
-  "name": "@competence-platform/client",
+  "name": "@habilitrace/client",
   "version": "0.1.0",
   "type": "module",
   "scripts": {

@@ -22,15 +22,23 @@ export function listCommunities(req, res, next) {
       .prepare(
         `SELECT communities.*,
                 COUNT(DISTINCT community_members.user_id) AS memberCount,
-                COUNT(DISTINCT evidences.id) AS evidenceCount
+                COUNT(DISTINCT evidences.id) AS evidenceCount,
+                ${req.user ? 'MAX(CASE WHEN community_members.user_id = ? THEN 1 ELSE 0 END)' : '0'} AS joined
          FROM communities
          LEFT JOIN community_members ON community_members.community_id = communities.id
          LEFT JOIN evidences ON evidences.community_id = communities.id
          GROUP BY communities.id
          ORDER BY memberCount DESC, communities.name ASC`
       )
-      .all();
-    res.json(rows.map((row) => ({ ...row, memberCount: row.memberCount, evidenceCount: row.evidenceCount })));
+      .all(...(req.user ? [req.user.id] : []));
+    res.json(
+      rows.map((row) => ({
+        ...row,
+        memberCount: row.memberCount,
+        evidenceCount: row.evidenceCount,
+        joined: Boolean(row.joined)
+      }))
+    );
   } catch (error) {
     next(error);
   }
@@ -38,6 +46,12 @@ export function listCommunities(req, res, next) {
 
 export function createCommunity(req, res, next) {
   try {
+    if (process.env.ENABLE_PUBLIC_AREA_CREATION !== 'true') {
+      return res.status(403).json({
+        message: 'Las areas de practica son administradas por el sistema. Los usuarios pueden vincularse a areas existentes.'
+      });
+    }
+
     const payload = communitySchema.parse(req.body);
     const slug = slugify(payload.name);
     const result = db
