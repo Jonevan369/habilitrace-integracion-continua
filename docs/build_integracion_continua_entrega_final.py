@@ -95,9 +95,9 @@ def heading(doc, text):
 def add_metadata_table(doc):
     rows = [
         ("Proyecto", "HabiliTrace"),
-        ("Asignatura", "Enfasis Profesional II - Integracion Continua (codigo 2711)"),
-        ("Entrega", "Entrega 3 - Pipeline de Integracion Continua con GitHub Actions"),
-        ("Tutor", "Samir Yardany Pena Rocha"),
+        ("Asignatura", "Énfasis Profesional II - Integración Continua (código 2711)"),
+        ("Entrega", "Entrega 3 - Pipeline de Integración Continua con GitHub Actions"),
+        ("Tutor", "Samir Yardany Peña Rocha"),
         ("Estudiante", "John Edisson Vanegas Cuervo"),
         ("Fecha", "22 de junio de 2026"),
         ("Repositorio", "https://github.com/Jonevan369/habilitrace-integracion-continua"),
@@ -126,7 +126,7 @@ def add_workflow_table(doc):
     table = doc.add_table(rows=1, cols=2)
     table.autofit = False
     headers = table.rows[0].cells
-    for idx, title in enumerate(("Parte del workflow", "Funcion dentro de la integracion continua")):
+    for idx, title in enumerate(("Parte del workflow", "Función dentro de la integración continua")):
         set_cell_width(headers[idx], 2.65 if idx == 0 else 4.2)
         shade(headers[idx], LIGHT_BLUE)
         cell_margins(headers[idx])
@@ -134,12 +134,12 @@ def add_workflow_table(doc):
         spacing(p, after=0, line=1.0)
         set_run(p.add_run(title), size=7.7, bold=True, color=BLUE)
     rows = [
-        ("name: HabiliTrace CI", "Identifica el flujo en la pestana Actions para que el evaluador ubique la ejecucion."),
-        ("on: push / pull_request", "Ejecuta el pipeline automaticamente cada vez que se sube un cambio o se abre un pull request hacia main."),
+        ("name: HabiliTrace CI", "Identifica el flujo en la pestaña Actions para que el evaluador ubique la ejecución."),
+        ("on: push / pull_request", "Ejecuta el pipeline automáticamente cada vez que se sube un cambio o se abre un pull request hacia main."),
         ("runs-on: ubuntu-latest", "Usa un runner Linux limpio de GitHub para validar el proyecto en un entorno reproducible."),
-        ("actions/checkout@v4", "Descarga el codigo del repositorio dentro del runner."),
-        ("actions/setup-node@v4", "Instala Node.js 20 y habilita cache de npm para dependencias."),
-        ("npm ci", "Instala dependencias exactamente segun package-lock.json."),
+        ("actions/checkout@v4", "Descarga el código del repositorio dentro del runner."),
+        ("actions/setup-node@v4", "Instala Node.js 20 y habilita caché de npm para dependencias."),
+        ("npm ci", "Instala dependencias exactamente según package-lock.json."),
         ("npm test -w server", "Ejecuta las pruebas automatizadas del backend; si una prueba falla, el build queda rojo."),
         ("npm run build", "Compila el frontend React/Vite; si hay errores de build, el flujo falla."),
     ]
@@ -188,7 +188,7 @@ def build():
 
     title = para(
         doc,
-        "Integracion continua entrega final",
+        "Integración continua entrega final",
         size=14,
         bold=True,
         color=BLUE,
@@ -198,7 +198,7 @@ def build():
     title.paragraph_format.keep_with_next = True
     para(
         doc,
-        "Entrega 3 - Pipeline de Integracion Continua con GitHub Actions",
+        "Entrega 3 - Pipeline de Integración Continua con GitHub Actions",
         size=9.5,
         italic=True,
         color=MUTED,
@@ -210,7 +210,7 @@ def build():
     heading(doc, "Concepto")
     para(
         doc,
-        "La integracion continua es una practica de desarrollo en la que cada cambio subido al repositorio activa validaciones automaticas como instalacion de dependencias, pruebas y compilacion. Sirve para detectar errores temprano, evitar que codigo defectuoso llegue a la rama principal y demostrar que el proyecto sigue funcionando despues de cada actualizacion.",
+        "La integración continua es una práctica de desarrollo en la que cada cambio subido al repositorio activa validaciones automáticas como instalación de dependencias, pruebas y compilación. Sirve para detectar errores temprano, evitar que código defectuoso llegue a la rama principal y demostrar que el proyecto sigue funcionando después de cada actualización.",
         size=9.4,
         after=3,
     )
@@ -223,28 +223,28 @@ def build():
     add_evidence(
         doc,
         "github_actions_success.png",
-        "Figura 1. Ejecucion exitosa del flujo (build verde)",
+        "Figura 1. Ejecución exitosa del flujo (build verde)",
         GREEN,
-        "Las pruebas automatizadas pasaron y el workflow finalizo correctamente.",
+        "Las pruebas automatizadas pasaron y el workflow finalizó correctamente.",
     )
     doc.add_page_break()
     add_evidence(
         doc,
         "github_actions_failure.png",
-        "Figura 2. Ejecucion fallida del flujo (build rojo)",
+        "Figura 2. Ejecución fallida del flujo (build rojo)",
         RED,
-        "Se rompio una prueba de forma intencional para demostrar que GitHub Actions detecta el fallo.",
+        "Se rompió una prueba de forma intencional para demostrar que GitHub Actions detecta el fallo.",
     )
 
     heading(doc, "Cierre")
     para(
         doc,
-        "El repositorio final queda publico, con el workflow de GitHub Actions en .github/workflows/ci.yml y ejecucion automatica ante cada push o pull request. El archivo server/.env no se publica; solo se incluye server/.env.example para documentar las variables necesarias sin exponer la API privada.",
+        "El repositorio final queda público, con el workflow de GitHub Actions en .github/workflows/ci.yml y ejecución automática ante cada push o pull request. El archivo server/.env no se publica; solo se incluye server/.env.example para documentar las variables necesarias sin exponer la API privada.",
         size=10.1,
         after=0,
     )
 
-    doc.core_properties.title = "Integracion continua entrega final"
+    doc.core_properties.title = "Integración continua entrega final"
     doc.core_properties.author = "John Edisson Vanegas Cuervo"
     doc.core_properties.subject = "Entrega 3 - GitHub Actions"
     doc.save(OUT)
