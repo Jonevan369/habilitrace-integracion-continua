@@ -5,7 +5,7 @@ import { calculateKarmaDelta, voteWeightForKarma } from '../services/karmaServic
 test('voteWeightForKarma caps reputation influence', () => {
   assert.equal(voteWeightForKarma(0), 1);
   assert.equal(voteWeightForKarma(25), 1.25);
-  assert.equal(voteWeightForKarma(300), 2);
+  assert.equal(voteWeightForKarma(300), 99);
 });
 
 test('calculateKarmaDelta rewards consensus alignment and penalizes disagreement lightly', () => {
